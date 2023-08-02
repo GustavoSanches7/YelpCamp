@@ -16,8 +16,6 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
-/* git diff */
-
 const app = express(); 
 
 app.engine('ejs', ejsMate);
