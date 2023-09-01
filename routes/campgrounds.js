@@ -25,7 +25,6 @@ router.get('/new', (req, res) => {
     res.render('campgrounds/new');
 })
 
-
 router.post('/', validateCampground, catchAsync(async (req, res, next) => {
     // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
     const campground = new Campground(req.body.campground);
