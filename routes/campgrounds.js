@@ -8,18 +8,17 @@ const { campgroundSchema } = require('../schemas.js');
 const ExpressError = require('../utilities/ExpressError');
 const Campground = require('../models/campground');
 
-router.get('/', catchAsync(campgrounds.index));
+router.route('/')
+    .get(catchAsync(campgrounds.index))
+    .post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground))
 
-router.post('/', isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground));
+router.get('/new', isLoggedIn, campgrounds.renderNewForm)
 
-router.get('/new', isLoggedIn, campgrounds.renderNewForm);
+router.route('/:id')
+    .get(catchAsync(campgrounds.showCampground))
+    .put(isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.updateCampground))
+    .delete(isLoggedIn, isAuthor, catchAsync(campgrounds.deleteCampground));
 
-router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.renderEditForm));
-
-router.get('/:id', catchAsync(campgrounds.showCampground));
-
-router.put('/:id', isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.updateCampground));
-
-router.delete('/:id', isAuthor, isLoggedIn, catchAsync(campgrounds.deleteCampground));
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.renderEditForm))
 
 module.exports = router;
